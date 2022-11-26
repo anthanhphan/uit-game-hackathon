@@ -10,6 +10,7 @@ import '/widgets/hud.dart';
 import '/models/settings.dart';
 import '/game/audio_manager.dart';
 import '/game/enemy_manager.dart';
+import '/game/friend_manager.dart';
 import '/models/player_data.dart';
 import '/widgets/pause_menu.dart';
 import '/widgets/game_over_menu.dart';
@@ -41,6 +42,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollidables {
   late Settings settings;
   late PlayerData playerData;
   late EnemyManager _enemyManager;
+  late FriendManager _friendManager;
 
   // This method get called while flame is preparing this game.
   @override
@@ -82,6 +84,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollidables {
     _dino = Dino(images.fromCache('DinoSprites - tard.png'), playerData);
     // Create an enemy manager.
     _enemyManager = EnemyManager();
+    _friendManager = FriendManager();
 
     return super.onLoad();
   }
@@ -91,6 +94,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollidables {
   void startGamePlay() {
     add(_dino);
     add(_enemyManager);
+    add(_friendManager);
   }
 
   // This method remove all the actors from the game.
@@ -98,6 +102,8 @@ class DinoRun extends FlameGame with TapDetector, HasCollidables {
     _dino.removeFromParent();
     _enemyManager.removeAllEnemies();
     _enemyManager.removeFromParent();
+    _friendManager.removeAllEnemies();
+    _friendManager.removeFromParent();
   }
 
   // This method reset the whole game world to initial state.

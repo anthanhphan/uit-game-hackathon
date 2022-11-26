@@ -4,6 +4,7 @@ import 'package:flame/geometry.dart';
 import 'package:flame/components.dart';
 
 import '/game/enemy.dart';
+import '/game/friend.dart';
 import '/game/dino_run.dart';
 import '/game/audio_manager.dart';
 import '/models/player_data.dart';
@@ -120,7 +121,10 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
     // Call hit only if other component is an Enemy and dino
     // is not already in hit state.
     if ((other is Enemy) && (!isHit)) {
-      hit();
+      badHit();
+    }
+    if ((other is Friend) && (!isHit)) {
+      goodHit();
     }
     super.onCollision(intersectionPoints, other);
   }
@@ -141,12 +145,20 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
   // This method changes the animation state to
   /// [DinoAnimationStates.hit], plays the hit sound
   /// effect and reduces the player life by 1.
-  void hit() {
+  void badHit() {
     isHit = true;
     AudioManager.instance.playSfx('hurt7.wav');
     current = DinoAnimationStates.hit;
     _hitTimer.start();
     playerData.lives -= 1;
+  }
+
+  void goodHit() {
+    isHit = true;
+    AudioManager.instance.playSfx('hurt7.wav');
+    current = DinoAnimationStates.hit;
+    _hitTimer.start();
+    playerData.lives += 1;
   }
 
   // This method reset some of the important properties
