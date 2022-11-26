@@ -34,7 +34,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     'Paper/Paper (32x35).png',
     'Owl/Owl (45x45).png',
     'Penguin/Penguin (25x25).png',
-    'Tree/Tree (40x60).png',
+    'Tree/Tree (50x60).png',
     'Bush/Bush (35x30).png',
     'Bread/Bread (24x25).png',
     'Monster/Monster (95x92).png',

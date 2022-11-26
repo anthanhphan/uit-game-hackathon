@@ -16,7 +16,11 @@ class BonusManager extends Component with HasGameRef<DinoRun> {
   final Random _random = Random();
 
   // Timer to decide when to spawn next enemy.
+<<<<<<< HEAD
   final Timer _timer = Timer(2, repeat: true);
+=======
+  final Timer _timer = Timer(7, repeat: true);
+>>>>>>> 2028b26b7b4c3a0baa447e8638023e2dec199294
 
   BonusManager() {
     _timer.onTick = spawnRandomEnemy;
@@ -63,7 +67,7 @@ class BonusManager extends Component with HasGameRef<DinoRun> {
           nFrames: 6,
           stepTime: 0.1,
           textureSize: Vector2(36, 30),
-          speedX: 100,
+          speedX: 150,
           canFly: false,
         ),
         BonusData(
@@ -71,7 +75,7 @@ class BonusManager extends Component with HasGameRef<DinoRun> {
             nFrames: 10,
             stepTime: 0.1,
             textureSize: Vector2(32, 35),
-            speedX: 100,
+            speedX: 170,
             canFly: true)
       ]);
     }
