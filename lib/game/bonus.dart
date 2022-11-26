@@ -2,21 +2,21 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
 import '/game/dino_run.dart';
-import '/models/friend_data.dart';
+import '/models/bonus_data.dart';
 
 // This represents an enemy in the game world.
-class Friend extends SpriteAnimationComponent
+class Bonus extends SpriteAnimationComponent
     with CollisionCallbacks, HasGameRef<DinoRun> {
   // The data required for creation of this enemy.
-  final FriendData friendData;
+  final BonusData bossData;
 
-  Friend(this.friendData) {
+  Bonus(this.bossData) {
     animation = SpriteAnimation.fromFrameData(
-      friendData.image,
+      bossData.image,
       SpriteAnimationData.sequenced(
-        amount: friendData.nFrames,
-        stepTime: friendData.stepTime,
-        textureSize: friendData.textureSize,
+        amount: bossData.nFrames,
+        stepTime: bossData.stepTime,
+        textureSize: bossData.textureSize,
       ),
     );
   }
@@ -40,12 +40,15 @@ class Friend extends SpriteAnimationComponent
 
   @override
   void update(double dt) {
-    position.x -= friendData.speedX * dt;
+    position.x -= bossData.speedX * dt;
 
     // Remove the enemy and increase player score
     // by 1, if enemy has gone past left end of the screen.
-    if (position.x < -friendData.textureSize.x) {
+    if (position.x < -bossData.textureSize.x) {
       removeFromParent();
+      if (gameRef.playerData.currentTime > 0) {
+        gameRef.playerData.currentScore += 1;
+      }
     }
 
     super.update(dt);

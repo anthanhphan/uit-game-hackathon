@@ -33,7 +33,7 @@ class PlayerData extends ChangeNotifier with HiveObjectMixin {
     save();
   }
 
-  double timerCount = 10;
+  double timerCount = 30;
 
   double get currentTime => timerCount;
   set currentTime(double value) {

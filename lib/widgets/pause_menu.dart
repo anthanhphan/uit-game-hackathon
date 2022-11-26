@@ -73,6 +73,7 @@ class PauseMenu extends StatelessWidget {
                         gameRef.overlays.add(Hud.id);
                         gameRef.resumeEngine();
                         gameRef.reset();
+                        gameRef.playerData.currentTime = 30;
                         gameRef.startGamePlay();
                         AudioManager.instance.resumeBgm();
                       },

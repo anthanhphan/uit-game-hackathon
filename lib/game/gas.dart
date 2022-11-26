@@ -46,7 +46,6 @@ class Gas extends SpriteAnimationComponent
     // by 1, if gas has gone past left end of the screen.
     if (position.x < -gasData.textureSize.x) {
       removeFromParent();
-      gameRef.playerData.currentScore += 1;
     }
 
     super.update(dt);

@@ -6,6 +6,7 @@ import 'package:flame/components.dart';
 import '/game/enemy.dart';
 import '/game/friend.dart';
 import '/game/gas.dart';
+import '/game/bonus.dart';
 
 import '/game/dino_run.dart';
 import '/game/audio_manager.dart';
@@ -80,15 +81,7 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
   @override
   void onMount() {
     // First reset all the important properties, because onMount()
-    if (isMounted) {
-      removeFromParent();
-    }
-    anchor = Anchor.bottomLeft;
-    position = Vector2(32, gameRef.size.y - 22);
-    size = Vector2.all(24);
-    current = DinoAnimationStates.run;
-    isHit = false;
-    speedY = 0.0;
+    _reset();
     // adding timer component into game
     _countdown.onTick = () {
       if (gameRef.playerData.currentTime > 0) {
@@ -153,6 +146,10 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
       if ((other is Gas) && (!isHit)) {
         gasHit();
       }
+
+      if ((other is Bonus) && (!isHit)) {
+        pointHit();
+      }
     }
     super.onCollision(intersectionPoints, other);
   }
@@ -179,6 +176,14 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
     current = DinoAnimationStates.hit;
     _hitTimer.start();
     playerData.lives -= 1;
+  }
+
+  void pointHit() {
+    isHit = true;
+    AudioManager.instance.playSfx('hurt7.wav');
+    current = DinoAnimationStates.hit;
+    _hitTimer.start();
+    gameRef.playerData.currentScore += 1;
   }
 
   void goodHit() {
@@ -213,6 +218,6 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
     current = DinoAnimationStates.run;
     isHit = false;
     speedY = 0.0;
-    gameRef.playerData.currentTime = 5;
+    gameRef.playerData.currentTime = 30;
   }
 }
