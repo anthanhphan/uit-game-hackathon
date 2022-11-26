@@ -38,6 +38,9 @@ flutter:
     - assets/images/Lion/
     - assets/images/Owl/
     - assets/images/Penguin/
+    - assets/images/Tree/
+    - assets/images/Bush/
+    - assets/images/Pandas/
     - assets/audio/
 
   fonts:

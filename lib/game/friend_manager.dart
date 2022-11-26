@@ -63,7 +63,7 @@ class FriendManager extends Component with HasGameRef<DinoRun> {
           nFrames: 10,
           stepTime: 0.1,
           textureSize: Vector2(32, 35),
-          speedX: 150,
+          speedX: 100,
           canFly: true,
         ),
       ]);
