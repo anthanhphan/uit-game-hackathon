@@ -16,7 +16,7 @@ class BossManager extends Component with HasGameRef<DinoRun> {
   final Random _random = Random();
 
   // Timer to decide when to spawn next enemy.
-  final Timer _timer = Timer(2, repeat: true);
+  final Timer _timer = Timer(2, repeat: false);
 
   BossManager() {
     _timer.onTick = spawnRandomEnemy;
@@ -32,7 +32,7 @@ class BossManager extends Component with HasGameRef<DinoRun> {
     // Help in setting all enemies on ground.
     boss.anchor = Anchor.bottomLeft;
     boss.position = Vector2(
-      gameRef.size.x - 32,
+      gameRef.size.x - 62,
       gameRef.size.y - 24,
     );
 
@@ -59,10 +59,10 @@ class BossManager extends Component with HasGameRef<DinoRun> {
       // As soon as this component is mounted, initilize all the data.
       _data.addAll([
         BossData(
-          image: gameRef.images.fromCache('Bat/Flying (46x30).png'),
+          image: gameRef.images.fromCache('Bat/Flying (92x60).png'),
           nFrames: 7,
           stepTime: 0.1,
-          textureSize: Vector2(46, 30),
+          textureSize: Vector2(92, 60),
           speedX: 0,
           canFly: true,
         ),

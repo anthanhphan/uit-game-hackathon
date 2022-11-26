@@ -60,6 +60,8 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
   // Dino's current speed along y-axis.
   double speedY = 0.0;
 
+  final Timer _countdown = Timer(1, repeat: true);
+
   // Controlls how long the hit animations will be played.
   final Timer _hitTimer = Timer(1);
 
@@ -77,6 +79,13 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
     // First reset all the important properties, because onMount()
     // will be called even while restarting the game.
     _reset();
+
+    // adding timer component into game
+    _countdown.onTick = () {
+      if (gameRef.playerData.currentTime > 0) {
+        gameRef.playerData.currentTime--;
+      }
+    };
 
     // Add a hitbox for dino.
     add(
@@ -115,6 +124,7 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
       }
     }
 
+    _countdown.update(dt);
     _hitTimer.update(dt);
     super.update(dt);
   }
@@ -166,5 +176,6 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
     current = DinoAnimationStates.run;
     isHit = false;
     speedY = 0.0;
+    gameRef.playerData.currentTime = 5;
   }
 }

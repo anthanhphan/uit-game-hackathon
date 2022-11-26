@@ -48,6 +48,15 @@ class Hud extends StatelessWidget {
                     );
                   },
                 ),
+                Selector<PlayerData, int>(
+                  selector: (_, playerData) => playerData.currentTime.toInt(),
+                  builder: (_, currentTime, __) {
+                    return Text(
+                      'Time: $currentTime',
+                      style: const TextStyle(color: Colors.white),
+                    );
+                  },
+                ),
               ],
             ),
             TextButton(
