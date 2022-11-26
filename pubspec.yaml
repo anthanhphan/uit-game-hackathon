@@ -43,6 +43,7 @@ flutter:
     - assets/images/Bread/
     - assets/images/Monster/
     - assets/audio/
+    - assets/images/Bullet/
 
   fonts:
     - family: Audiowide

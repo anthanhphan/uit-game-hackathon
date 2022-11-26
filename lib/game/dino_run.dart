@@ -1,3 +1,4 @@
+import 'package:dino_run/game/bullet_manager.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:hive/hive.dart';
@@ -43,6 +44,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     'parallax/plx-4.png',
     'parallax/plx-5.png',
     'parallax/plx-6.png',
+    'Bullet/fire_bullet.png',
   ];
 
   // List of all the audio assets.
@@ -60,6 +62,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
   late GasManager _gasManager;
   late BossManager _bossManager;
   late BonusManager _bonusManager;
+  late BulletManager _bulletManager;
 
   @override
   late bool isLoaded;
@@ -118,6 +121,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     _friendManager = FriendManager();
     _gasManager = GasManager();
     _bonusManager = BonusManager();
+    _bulletManager = BulletManager();
     isLoaded = false;
 
     parallaxBackground.removeFromParent();
@@ -173,7 +177,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
 
     // Reset player data to inital values.
     playerData.currentScore = 0;
-    playerData.currentTime = 30;
+    playerData.currentTime = 0;
     playerData.lives = 5;
   }
 
@@ -230,6 +234,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
       add(parallaxBackground);
       add(_dino);
       add(_bossManager);
+      add(_bulletManager);
     }
 
     if (isLoaded) {
