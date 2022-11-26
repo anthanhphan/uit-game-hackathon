@@ -146,12 +146,16 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
       }
       if ((other is Friend) && (!isHit)) {
         goodHit();
+        other.removeFromParent();
+        // remove(other);
       }
       if ((other is Gas) && (!isHit)) {
         gasHit();
       }
       if ((other is Bonus) && (!isHit)) {
         pointHit();
+        other.removeFromParent();
+        // remove(other);
       }
     }
     super.onCollision(intersectionPoints, other);
@@ -182,17 +186,17 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
   }
 
   void pointHit() {
-    isHit = true;
+    // isHit = true;
     AudioManager.instance.playSfx('hurt7.wav');
-    current = DinoAnimationStates.hit;
+    current = DinoAnimationStates.kick;
     _hitTimer.start();
     gameRef.playerData.currentScore += 1;
   }
 
   void goodHit() {
-    isHit = true;
+    // isHit = true;
     AudioManager.instance.playSfx('hurt7.wav');
-    current = DinoAnimationStates.hit;
+    current = DinoAnimationStates.kick;
     _hitTimer.start();
     playerData.lives += 1;
   }

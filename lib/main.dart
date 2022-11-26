@@ -11,6 +11,7 @@ import 'models/settings.dart';
 import 'widgets/main_menu.dart';
 import 'models/player_data.dart';
 import 'widgets/pause_menu.dart';
+import 'widgets/shop_menu.dart';
 import 'widgets/settings_menu.dart';
 import 'widgets/game_over_menu.dart';
 
@@ -81,6 +82,7 @@ class DinoRunApp extends StatelessWidget {
           overlayBuilderMap: {
             MainMenu.id: (_, DinoRun gameRef) => MainMenu(gameRef),
             PauseMenu.id: (_, DinoRun gameRef) => PauseMenu(gameRef),
+            ShopMenu.id: (_, DinoRun gameRef) => ShopMenu(gameRef),
             Hud.id: (_, DinoRun gameRef) => Hud(gameRef),
             GameOverMenu.id: (_, DinoRun gameRef) => GameOverMenu(gameRef),
             SettingsMenu.id: (_, DinoRun gameRef) => SettingsMenu(gameRef),
