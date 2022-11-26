@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import '/game/dino_run.dart';
 import '/models/boss_data.dart';
 import 'bullet.dart';
-import 'LifeBar.dart';
 
 // This represents an enemy in the game world.
 class Boss extends SpriteAnimationComponent
@@ -46,20 +45,8 @@ class Boss extends SpriteAnimationComponent
     );
   }
 
-  late LifeBar lifeBar;
-
-  createLifeBar() {
-    lifeBar = LifeBar.initData(size,
-        size: Vector2(40, 5), placement: LifeBarPlacement.left);
-    //
-    // add all lifebar element to the children of the Square instance
-    add(lifeBar);
-  }
-
   @override
   Future<void> onMount() async {
-    createLifeBar();
-
     // Reduce the size of enemy as they look too
     // big compared to the dino.
     _bulletCreation = BulletManager();
