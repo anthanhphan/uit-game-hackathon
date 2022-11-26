@@ -83,11 +83,11 @@ class EnemyManager extends Component with HasGameRef<DinoRun> {
           canFly: false,
         ),
         EnemyData(
-          image: gameRef.images.fromCache('Bush/Bush (35x30).png'),
-          nFrames: 13,
-          stepTime: 0.5,
-          textureSize: Vector2(35, 30),
-          speedX: 70,
+          image: gameRef.images.fromCache('Tree/Tree (50x60).png'),
+          nFrames: 14,
+          stepTime: 0.1,
+          textureSize: Vector2(50, 60),
+          speedX: 130,
           canFly: false,
         )
       ]);
