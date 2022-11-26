@@ -1,53 +1,44 @@
 import 'dart:math';
 
-import 'package:dino_run/game/boss_attack.dart';
-import 'package:dino_run/models/bullet_data.dart';
 import 'package:flame/components.dart';
 
-import '/game/boss.dart';
+import '/game/bullet.dart';
 import '/game/dino_run.dart';
-import '/models/boss_data.dart';
-import 'bullet.dart';
+import '/models/bullet_data.dart';
 
 // This class is responsible for spawning random enemies at certain
 // interval of time depending upon players current score.
-class BossManager extends Component with HasGameRef<DinoRun> {
+class BulletManager extends Component with HasGameRef<DinoRun> {
   // A list to hold data for all the enemies.
-  final List<BossData> _data = [];
+  final List<BulletData> _data = [];
 
   // Random generator required for randomly selecting enemy type.
   final Random _random = Random();
 
   // Timer to decide when to spawn next enemy.
-  final Timer _timer = Timer(2, repeat: false);
+  final Timer _timer = Timer(3, repeat: true);
 
-  // final Timer _singleBullet = Timer(3, repeat: true);
-
-  BossManager() {
-    _timer.onTick = spawnRandomEnemy;
-    // _singleBullet.onTick = () {
-    //   add();
-    // };
+  BulletManager() {
+    _timer.onTick = spawnBullet;
   }
 
   // This method is responsible for spawning a random enemy.
-  void spawnRandomEnemy() {
-    /// Generate a random index within [_data] and get an [BossData].
+  void spawnBullet() {
     final randomIndex = _random.nextInt(_data.length);
-    final bossData = _data.elementAt(randomIndex);
-    final boss = Boss(bossData);
+    final bulletData = _data.elementAt(randomIndex);
+    final bonus = Bullet(bulletData);
 
     // Help in setting all enemies on ground.
-    boss.anchor = Anchor.bottomLeft;
-    boss.position = Vector2(
+    bonus.anchor = Anchor.bottomLeft;
+    bonus.position = Vector2(
       gameRef.size.x - 62,
-      gameRef.size.y - 74,
+      gameRef.size.y - 24,
     );
 
     // Due to the size of our viewport, we can
     // use textureSize as size for the components.
-    boss.size = bossData.textureSize;
-    gameRef.add(boss);
+    bonus.size = bulletData.textureSize;
+    gameRef.add(bonus);
   }
 
   @override
@@ -59,31 +50,29 @@ class BossManager extends Component with HasGameRef<DinoRun> {
     // Don't fill list again and again on every mount.
     if (_data.isEmpty) {
       // As soon as this component is mounted, initilize all the data.
-      _data.addAll([
-        BossData(
-          image: gameRef.images.fromCache('Bat/Flying (92x60).png'),
-          nFrames: 7,
+      _data.add(
+        BulletData(
+          image: gameRef.images.fromCache('Bullet/fire_bullet.png'),
+          nFrames: 1,
           stepTime: 0.1,
-          textureSize: Vector2(92, 60),
-          speedX: 0,
-          canFly: true,
+          textureSize: Vector2(100, 30),
+          speedX: 550,
+          canFly: false,
         ),
-      ]);
+        );
     }
-    // _singleBullet.start();
     _timer.start();
     super.onMount();
   }
 
   @override
   void update(double dt) {
-    // _singleBullet.update(dt);
     _timer.update(dt);
     super.update(dt);
   }
 
   void removeAllEnemies() {
-    final enemies = gameRef.children.whereType<Boss>();
+    final enemies = gameRef.children.whereType<Bullet>();
     for (var enemy in enemies) {
       enemy.removeFromParent();
     }

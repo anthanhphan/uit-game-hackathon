@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:dino_run/game/bullet.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
@@ -136,6 +137,9 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     // Call hit only if other component is an Enemy and dino
     // is not already in hit state.
+    if ((other is Bullet) && (!isHit)) {
+      badHit();
+    }
     if (gameRef.playerData.currentTime > 0) {
       if ((other is Enemy) && (!isHit)) {
         badHit();
@@ -146,7 +150,6 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
       if ((other is Gas) && (!isHit)) {
         gasHit();
       }
-
       if ((other is Bonus) && (!isHit)) {
         pointHit();
       }

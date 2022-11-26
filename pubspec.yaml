@@ -42,6 +42,7 @@ flutter:
     - assets/images/Bush/
     - assets/images/Bread/
     - assets/audio/
+    - assets/images/Bullet/
 
   fonts:
     - family: Audiowide
