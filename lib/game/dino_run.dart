@@ -10,6 +10,7 @@ import '/widgets/hud.dart';
 import '/models/settings.dart';
 import '/game/audio_manager.dart';
 import '/game/enemy_manager.dart';
+import '/game/boss_manager.dart';
 import '/models/player_data.dart';
 import '/widgets/pause_menu.dart';
 import '/widgets/game_over_menu.dart';
@@ -41,6 +42,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
   late Settings settings;
   late PlayerData playerData;
   late EnemyManager _enemyManager;
+  late BossManager _bossManager;
 
   // This method get called while flame is preparing this game.
   @override
@@ -73,7 +75,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
         ParallaxImageData('parallax/plx-5.png'),
         ParallaxImageData('parallax/plx-6.png'),
       ],
-      baseVelocity: Vector2(10, 0),
+      baseVelocity: Vector2(0, 0),
       velocityMultiplierDelta: Vector2(1.4, 0),
     );
     add(parallaxBackground);
@@ -86,9 +88,11 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
   void startGamePlay() {
     _dino = Dino(images.fromCache('DinoSprites - tard.png'), playerData);
     _enemyManager = EnemyManager();
+    _bossManager = BossManager();
 
     add(_dino);
     add(_enemyManager);
+    add(_bossManager);
   }
 
   // This method remove all the actors from the game.
@@ -96,6 +100,9 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     _dino.removeFromParent();
     _enemyManager.removeAllEnemies();
     _enemyManager.removeFromParent();
+
+    _bossManager.removeAllEnemies();
+    _bossManager.removeFromParent();
   }
 
   // This method reset the whole game world to initial state.
