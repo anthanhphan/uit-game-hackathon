@@ -109,7 +109,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
 
   /// This method add the already created [Dino]
   /// and [EnemyManager] to this game.
-  void startGamePlay() {
+  void startGamePlay() async {
     _dino = Dino(images.fromCache('DinoSprites - tard.png'), playerData);
     _enemyManager = EnemyManager();
     _bossManager = BossManager();
@@ -118,7 +118,23 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     _bonusManager = BonusManager();
     isLoaded = false;
 
+    parallaxBackground.removeFromParent();
+
+    parallaxBackground = await loadParallaxComponent(
+      [
+        ParallaxImageData('parallax/plx-1.png'),
+        ParallaxImageData('parallax/plx-2.png'),
+        ParallaxImageData('parallax/plx-3.png'),
+        ParallaxImageData('parallax/plx-4.png'),
+        ParallaxImageData('parallax/plx-5.png'),
+        ParallaxImageData('parallax/plx-6.png'),
+      ],
+      baseVelocity: Vector2(10, 0),
+      velocityMultiplierDelta: Vector2(1.4, 0),
+    );
+
     playerData.currentTime = 30;
+    add(parallaxBackground);
     add(_dino);
     add(_enemyManager);
     add(_friendManager);
@@ -214,7 +230,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     if (isLoaded) {
       playerData.currentTime = 0;
     }
-    print("out: ${playerData.currentTime}");
+    // print("out: ${playerData.currentTime}");
 
     super.update(dt);
   }

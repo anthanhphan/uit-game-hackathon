@@ -181,7 +181,7 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
   void pointHit() {
     isHit = true;
     AudioManager.instance.playSfx('hurt7.wav');
-    current = DinoAnimationStates.hit;
+    current = DinoAnimationStates.kick;
     _hitTimer.start();
     gameRef.playerData.currentScore += 1;
   }
@@ -189,7 +189,7 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
   void goodHit() {
     isHit = true;
     AudioManager.instance.playSfx('hurt7.wav');
-    current = DinoAnimationStates.hit;
+    current = DinoAnimationStates.kick;
     _hitTimer.start();
     playerData.lives += 1;
   }
