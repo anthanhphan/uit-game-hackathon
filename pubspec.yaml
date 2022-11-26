@@ -41,6 +41,7 @@ flutter:
     - assets/images/Tree/
     - assets/images/Bush/
     - assets/images/Bread/
+    - assets/images/Monster/
     - assets/audio/
 
   fonts:

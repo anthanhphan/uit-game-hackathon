@@ -16,7 +16,7 @@ class FriendManager extends Component with HasGameRef<DinoRun> {
   final Random _random = Random();
 
   // Timer to decide when to spawn next enemy.
-  final Timer _timer = Timer(5, repeat: true);
+  final Timer _timer = Timer(7, repeat: true);
 
   FriendManager() {
     _timer.onTick = spawnRandomEnemy;
@@ -63,7 +63,7 @@ class FriendManager extends Component with HasGameRef<DinoRun> {
           nFrames: 12,
           stepTime: 0.1,
           textureSize: Vector2(24, 25),
-          speedX: 150,
+          speedX: 100,
           canFly: true,
         ),
       ]);

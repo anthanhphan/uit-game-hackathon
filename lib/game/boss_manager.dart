@@ -59,12 +59,12 @@ class BossManager extends Component with HasGameRef<DinoRun> {
       // As soon as this component is mounted, initilize all the data.
       _data.addAll([
         BossData(
-          image: gameRef.images.fromCache('Bat/Flying (92x60).png'),
+          image: gameRef.images.fromCache('Monster/Monster (95x92).png'),
           nFrames: 7,
           stepTime: 0.1,
-          textureSize: Vector2(92, 60),
+          textureSize: Vector2(95, 92),
           speedX: 0,
-          canFly: true,
+          canFly: false,
         ),
       ]);
     }
