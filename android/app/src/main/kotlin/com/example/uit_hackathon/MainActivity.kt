@@ -1,4 +1,4 @@
-package com.example.rubbish_man
+package com.example.uit_hackathon
 
 import io.flutter.embedding.android.FlutterActivity
 

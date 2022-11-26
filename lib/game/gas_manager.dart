@@ -63,7 +63,7 @@ class GasManager extends Component with HasGameRef<DinoRun> {
           nFrames: 1,
           stepTime: 0.1,
           textureSize: Vector2(46, 50),
-          speedX: 150,
+          speedX: 200,
           canFly: false,
         ),
       ]);

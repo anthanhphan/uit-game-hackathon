@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.rubbish_man">
+    package="com.example.uit_hackathon">
    <application
-        android:label="rubbish_man"
+        android:label="uit_hackathon"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
