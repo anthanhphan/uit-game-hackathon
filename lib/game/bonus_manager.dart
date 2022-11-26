@@ -16,7 +16,7 @@ class BonusManager extends Component with HasGameRef<DinoRun> {
   final Random _random = Random();
 
   // Timer to decide when to spawn next enemy.
-  final Timer _timer = Timer(2, repeat: false);
+  final Timer _timer = Timer(2, repeat: true);
 
   BonusManager() {
     _timer.onTick = spawnRandomEnemy;

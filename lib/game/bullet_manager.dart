@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flame/components.dart';
 
@@ -16,31 +17,45 @@ class BulletManager extends Component with HasGameRef<DinoRun> {
   final Random _random = Random();
 
   // Timer to decide when to spawn next enemy.
-  final Timer _timer = Timer(3, repeat: true);
+  // final Timer _timer = Timer(3, repeat: true);
 
-  BulletManager() {
-    _timer.onTick = spawnBullet;
-  }
+  // BulletManager() {
+  //   _timer.onTick = spawnBullet;
+  // }
 
   // This method is responsible for spawning a random enemy.
-  void spawnBullet() {
+  Bullet spawnBullet(double bulletX, double bulletY, Image bulletImage) {
+    if (_data.isNotEmpty) {
+      removeFromParent();
+    }
+    _data.add(
+      BulletData(
+        image: bulletImage,
+        nFrames: 1,
+        stepTime: 0.1,
+        textureSize: Vector2(100, 30),
+        speedX: 550,
+        canFly: false,
+      ),
+    );
+
     final randomIndex = _random.nextInt(_data.length);
     final bulletData = _data.elementAt(randomIndex);
-    final bonus = Bullet(bulletData);
+    final bullet = Bullet(bulletData);
 
     // Help in setting all enemies on ground.
-    bonus.anchor = Anchor.bottomLeft;
-    bonus.position = Vector2(
-      gameRef.size.x - 62,
-      gameRef.size.y - 24,
+    bullet.anchor = Anchor.bottomLeft;
+    bullet.position = Vector2(
+      bulletX,
+      50,
     );
 
     // Due to the size of our viewport, we can
     // use textureSize as size for the components.
-    bonus.size = bulletData.textureSize;
-    gameRef.add(bonus);
+    bullet.size = bulletData.textureSize;
+    return bullet;
   }
-
+  //
   @override
   void onMount() {
     if (isMounted) {
@@ -50,24 +65,12 @@ class BulletManager extends Component with HasGameRef<DinoRun> {
     // Don't fill list again and again on every mount.
     if (_data.isEmpty) {
       // As soon as this component is mounted, initilize all the data.
-      _data.add(
-        BulletData(
-          image: gameRef.images.fromCache('Bullet/fire_bullet.png'),
-          nFrames: 1,
-          stepTime: 0.1,
-          textureSize: Vector2(100, 30),
-          speedX: 550,
-          canFly: false,
-        ),
-        );
     }
-    _timer.start();
     super.onMount();
   }
 
   @override
   void update(double dt) {
-    _timer.update(dt);
     super.update(dt);
   }
 

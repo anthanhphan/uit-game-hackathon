@@ -8,6 +8,7 @@ class BossData {
   final double stepTime;
   final Vector2 textureSize;
   final double speedX;
+  final double speedY;
   final bool canFly;
 
   const BossData({
@@ -16,6 +17,7 @@ class BossData {
     required this.stepTime,
     required this.textureSize,
     required this.speedX,
+    required this.speedY,
     required this.canFly,
   });
 }

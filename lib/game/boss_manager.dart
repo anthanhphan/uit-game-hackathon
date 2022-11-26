@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:dino_run/game/boss_attack.dart';
-import 'package:dino_run/models/bullet_data.dart';
 import 'package:flame/components.dart';
 
 import '/game/boss.dart';
@@ -12,6 +10,13 @@ import 'bullet.dart';
 // This class is responsible for spawning random enemies at certain
 // interval of time depending upon players current score.
 class BossManager extends Component with HasGameRef<DinoRun> {
+
+  double yMax = 0.0;
+  double speedY = 0.0;
+  late double positionY;
+
+  static const double gravity = 1000;
+
   // A list to hold data for all the enemies.
   final List<BossData> _data = [];
 
@@ -21,13 +26,13 @@ class BossManager extends Component with HasGameRef<DinoRun> {
   // Timer to decide when to spawn next enemy.
   final Timer _timer = Timer(2, repeat: false);
 
-  // final Timer _singleBullet = Timer(3, repeat: true);
+  final Timer _bossJump = Timer(4, repeat: true);
 
   BossManager() {
     _timer.onTick = spawnRandomEnemy;
-    // _singleBullet.onTick = () {
-    //   add();
-    // };
+    _bossJump.onTick = () {
+      speedY = -300;
+    };
   }
 
   // This method is responsible for spawning a random enemy.
@@ -41,7 +46,7 @@ class BossManager extends Component with HasGameRef<DinoRun> {
     boss.anchor = Anchor.bottomLeft;
     boss.position = Vector2(
       gameRef.size.x - 62,
-      gameRef.size.y - 74,
+      gameRef.size.y - 24,
     );
 
     // Due to the size of our viewport, we can
@@ -56,6 +61,10 @@ class BossManager extends Component with HasGameRef<DinoRun> {
       removeFromParent();
     }
 
+    positionY = gameRef.size.y - 24;
+    print('positionY: ${positionY}');
+
+
     // Don't fill list again and again on every mount.
     if (_data.isEmpty) {
       // As soon as this component is mounted, initilize all the data.
@@ -66,6 +75,7 @@ class BossManager extends Component with HasGameRef<DinoRun> {
           stepTime: 0.1,
           textureSize: Vector2(95, 92),
           speedX: 0,
+          speedY: 40,
           canFly: false,
         ),
       ]);
@@ -77,7 +87,9 @@ class BossManager extends Component with HasGameRef<DinoRun> {
 
   @override
   void update(double dt) {
-    // _singleBullet.update(dt);
+    speedY += gravity * dt;
+    positionY += speedY * dt;
+
     _timer.update(dt);
     super.update(dt);
   }

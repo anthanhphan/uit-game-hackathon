@@ -139,7 +139,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
       velocityMultiplierDelta: Vector2(1.4, 0),
     );
 
-    playerData.currentTime = 30;
+    playerData.currentTime = 0;
     add(parallaxBackground);
     add(_dino);
     add(_enemyManager);
