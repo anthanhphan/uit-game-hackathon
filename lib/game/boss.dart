@@ -26,6 +26,10 @@ class Boss extends SpriteAnimationComponent
 
   bool _moveUp = true;
 
+  bool isHit = false;
+
+  final _hitTimer = Timer(1);
+
   final Timer _shootCountDown = Timer(
     0.75,
     repeat: true,
@@ -84,6 +88,11 @@ class Boss extends SpriteAnimationComponent
         position: Vector2(size.x * 0.2, size.y * 0.2) / 2,
       ),
     );
+
+    _hitTimer.onTick = () {
+      isHit = false;
+    };
+
     super.onMount();
   }
 
@@ -107,15 +116,25 @@ class Boss extends SpriteAnimationComponent
     _shootCountDown.update(dt);
     _switchDirection.update(dt);
     // lifeBarElements.update(dt);
+    _hitTimer.update(dt);
     super.update(dt);
   }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Bullet) {
+    if (other is Bullet && (!isHit)) {
       // print("hp");
-      lifeBar.decrementCurrentLifeBy(10);
+      //lifeBar.decrementCurrentLifeBy(10);
+      //_hitTimer.start();
+
+      bossHit();
     }
     super.onCollision(intersectionPoints, other);
+  }
+
+  void bossHit() {
+    gameRef.playerData.bosshp -= 1;
+    isHit = true;
+    _hitTimer.start();
   }
 }

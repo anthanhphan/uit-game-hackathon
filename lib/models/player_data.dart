@@ -19,6 +19,16 @@ class PlayerData extends ChangeNotifier with HiveObjectMixin {
     }
   }
 
+  int _bosshp = 10;
+
+  int get bosshp => _bosshp;
+  set bosshp(int value) {
+    if (value <= 10 && value >= 0) {
+      _bosshp = value;
+      notifyListeners();
+    }
+  }
+
   int _currentScore = 0;
 
   int get currentScore => _currentScore;

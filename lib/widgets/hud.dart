@@ -24,70 +24,99 @@ class Hud extends StatelessWidget {
       value: gameRef.playerData,
       child: Padding(
         padding: const EdgeInsets.only(top: 10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Selector<PlayerData, int>(
-                  selector: (_, playerData) => playerData.currentScore,
-                  builder: (_, score, __) {
-                    return Text(
-                      'Score: $score',
-                      style: const TextStyle(fontSize: 20, color: Colors.white),
-                    );
+                Column(
+                  children: [
+                    Selector<PlayerData, int>(
+                      selector: (_, playerData) => playerData.currentScore,
+                      builder: (_, score, __) {
+                        return Text(
+                          'Score: $score',
+                          style: const TextStyle(
+                              fontSize: 20, color: Colors.white),
+                        );
+                      },
+                    ),
+                    Selector<PlayerData, int>(
+                      selector: (_, playerData) => playerData.highScore,
+                      builder: (_, highScore, __) {
+                        return Text(
+                          'High: $highScore',
+                          style: const TextStyle(color: Colors.white),
+                        );
+                      },
+                    ),
+                    Selector<PlayerData, int>(
+                      selector: (_, playerData) =>
+                          playerData.currentTime.toInt(),
+                      builder: (_, currentTime, __) {
+                        return Text(
+                          'Time: $currentTime',
+                          style: const TextStyle(color: Colors.white),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                TextButton(
+                  onPressed: () {
+                    gameRef.overlays.remove(Hud.id);
+                    gameRef.overlays.add(PauseMenu.id);
+                    gameRef.pauseEngine();
+                    AudioManager.instance.pauseBgm();
                   },
+                  child: const Icon(Icons.pause, color: Colors.white),
                 ),
                 Selector<PlayerData, int>(
-                  selector: (_, playerData) => playerData.highScore,
-                  builder: (_, highScore, __) {
-                    return Text(
-                      'High: $highScore',
-                      style: const TextStyle(color: Colors.white),
+                  selector: (_, playerData) => playerData.lives,
+                  builder: (_, lives, __) {
+                    return Row(
+                      children: List.generate(5, (index) {
+                        if (index < lives) {
+                          return const Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          );
+                        } else {
+                          return const Icon(
+                            Icons.favorite_border,
+                            color: Colors.red,
+                          );
+                        }
+                      }),
                     );
                   },
-                ),
-                Selector<PlayerData, int>(
-                  selector: (_, playerData) => playerData.currentTime.toInt(),
-                  builder: (_, currentTime, __) {
-                    return Text(
-                      'Time: $currentTime',
-                      style: const TextStyle(color: Colors.white),
-                    );
-                  },
-                ),
+                )
               ],
             ),
-            TextButton(
-              onPressed: () {
-                gameRef.overlays.remove(Hud.id);
-                gameRef.overlays.add(PauseMenu.id);
-                gameRef.pauseEngine();
-                AudioManager.instance.pauseBgm();
-              },
-              child: const Icon(Icons.pause, color: Colors.white),
-            ),
-            Selector<PlayerData, int>(
-              selector: (_, playerData) => playerData.lives,
-              builder: (_, lives, __) {
-                return Row(
-                  children: List.generate(5, (index) {
-                    if (index < lives) {
-                      return const Icon(
-                        Icons.favorite,
-                        color: Colors.red,
-                      );
-                    } else {
-                      return const Icon(
-                        Icons.favorite_border,
-                        color: Colors.red,
-                      );
-                    }
-                  }),
-                );
-              },
-            )
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Selector<PlayerData, int>(
+                selector: (_, playerData) => playerData.bosshp,
+                builder: (_, bosshp, __) {
+                  return Row(
+                    children: List.generate(10, (index) {
+                      if (index < bosshp) {
+                        return const Icon(
+                          Icons.favorite,
+                          color: Color.fromARGB(255, 136, 20, 195),
+                        );
+                      } else {
+                        return const Icon(
+                          Icons.favorite_border,
+                          color: Colors.black,
+                        );
+                      }
+                    }),
+                  );
+                },
+              ),
+            ]),
           ],
         ),
       ),
