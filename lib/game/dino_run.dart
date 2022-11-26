@@ -13,6 +13,7 @@ import '/game/audio_manager.dart';
 import '/game/enemy_manager.dart';
 import '/game/friend_manager.dart';
 import '/game/gas_manager.dart';
+import '/game/boss_manager.dart';
 
 import '/models/player_data.dart';
 import '/widgets/pause_menu.dart';
@@ -47,6 +48,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
   late EnemyManager _enemyManager;
   late FriendManager _friendManager;
   late GasManager _gasManager;
+  late BossManager _bossManager;
 
   // This method get called while flame is preparing this game.
   @override
@@ -79,7 +81,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
         ParallaxImageData('parallax/plx-5.png'),
         ParallaxImageData('parallax/plx-6.png'),
       ],
-      baseVelocity: Vector2(10, 0),
+      baseVelocity: Vector2(0, 0),
       velocityMultiplierDelta: Vector2(1.4, 0),
     );
     add(parallaxBackground);
@@ -92,11 +94,13 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
   void startGamePlay() {
     _dino = Dino(images.fromCache('DinoSprites - tard.png'), playerData);
     _enemyManager = EnemyManager();
+    _bossManager = BossManager();
     _friendManager = FriendManager();
     _gasManager = GasManager();
 
     add(_dino);
     add(_enemyManager);
+    add(_bossManager);
     add(_friendManager);
     add(_gasManager);
   }
@@ -106,6 +110,8 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     _dino.removeFromParent();
     _enemyManager.removeAllObjects();
     _enemyManager.removeFromParent();
+    _bossManager.removeAllEnemies();
+    _bossManager.removeFromParent();
     _friendManager.removeAllObjects();
     _friendManager.removeFromParent();
     _gasManager.removeAllObjects();
