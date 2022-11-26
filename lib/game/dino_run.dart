@@ -8,18 +8,14 @@ import 'package:flame/components.dart';
 import '/game/dino.dart';
 import '/widgets/hud.dart';
 import '/models/settings.dart';
-
 import '/game/audio_manager.dart';
 import '/game/enemy_manager.dart';
-import '/game/friend_manager.dart';
-import '/game/boss_manager.dart';
-
 import '/models/player_data.dart';
 import '/widgets/pause_menu.dart';
 import '/widgets/game_over_menu.dart';
 
 // This is the main flame game class.
-class DinoRun extends FlameGame with TapDetector, HasCollidables {
+class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
   // List of all the image assets.
   static const _imageAssets = [
     'DinoSprites - tard.png',
@@ -36,7 +32,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollidables {
 
   // List of all the audio assets.
   static const _audioAssets = [
-    '8Bit Platformer Loop.wav',
+    '8BitPlatformerLoop.wav',
     'hurt7.wav',
     'jump14.wav',
   ];
@@ -45,8 +41,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollidables {
   late Settings settings;
   late PlayerData playerData;
   late EnemyManager _enemyManager;
-  late FriendManager _friendManager;
-  late BossManager _bossManager;
+
   // This method get called while flame is preparing this game.
   @override
   Future<void> onLoad() async {
@@ -59,7 +54,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollidables {
 
     // Start playing background music. Internally takes care
     // of checking user settings.
-    AudioManager.instance.startBgm('8Bit Platformer Loop.wav');
+    AudioManager.instance.startBgm('8BitPlatformerLoop.wav');
 
     // Cache all the images.
     await images.loadAll(_imageAssets);
@@ -78,17 +73,10 @@ class DinoRun extends FlameGame with TapDetector, HasCollidables {
         ParallaxImageData('parallax/plx-5.png'),
         ParallaxImageData('parallax/plx-6.png'),
       ],
-      baseVelocity: Vector2(0, 0),
+      baseVelocity: Vector2(10, 0),
       velocityMultiplierDelta: Vector2(1.4, 0),
     );
     add(parallaxBackground);
-
-    // Create the main hero of this game.
-    _dino = Dino(images.fromCache('DinoSprites - tard.png'), playerData);
-    // Create an enemy manager.
-    _enemyManager = EnemyManager();
-    _friendManager = FriendManager();
-    _bossManager = BossManager();
 
     return super.onLoad();
   }
@@ -96,10 +84,11 @@ class DinoRun extends FlameGame with TapDetector, HasCollidables {
   /// This method add the already created [Dino]
   /// and [EnemyManager] to this game.
   void startGamePlay() {
+    _dino = Dino(images.fromCache('DinoSprites - tard.png'), playerData);
+    _enemyManager = EnemyManager();
+
     add(_dino);
     add(_enemyManager);
-    add(_friendManager);
-    add(_bossManager);
   }
 
   // This method remove all the actors from the game.
@@ -107,9 +96,6 @@ class DinoRun extends FlameGame with TapDetector, HasCollidables {
     _dino.removeFromParent();
     _enemyManager.removeAllEnemies();
     _enemyManager.removeFromParent();
-    _friendManager.removeAllEnemies();
-    _friendManager.removeFromParent();
-    _bossManager.removeFromParent();
   }
 
   // This method reset the whole game world to initial state.

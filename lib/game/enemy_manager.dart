@@ -50,7 +50,9 @@ class EnemyManager extends Component with HasGameRef<DinoRun> {
 
   @override
   void onMount() {
-    shouldRemove = false;
+    if (isMounted) {
+      removeFromParent();
+    }
 
     // Don't fill list again and again on every mount.
     if (_data.isEmpty) {
@@ -63,6 +65,14 @@ class EnemyManager extends Component with HasGameRef<DinoRun> {
           textureSize: Vector2(36, 30),
           speedX: 80,
           canFly: false,
+        ),
+        EnemyData(
+          image: gameRef.images.fromCache('Bat/Flying (46x30).png'),
+          nFrames: 7,
+          stepTime: 0.1,
+          textureSize: Vector2(46, 30),
+          speedX: 100,
+          canFly: true,
         ),
         EnemyData(
           image: gameRef.images.fromCache('Rino/Run (52x34).png'),
@@ -86,8 +96,8 @@ class EnemyManager extends Component with HasGameRef<DinoRun> {
 
   void removeAllEnemies() {
     final enemies = gameRef.children.whereType<Enemy>();
-    for (var element in enemies) {
-      element.remove;
+    for (var enemy in enemies) {
+      enemy.removeFromParent();
     }
   }
 }

@@ -1,11 +1,9 @@
 import 'dart:ui';
 
-import 'package:flame/geometry.dart';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
 import '/game/enemy.dart';
-import '/game/friend.dart';
-import '/game/boss.dart';
 import '/game/dino_run.dart';
 import '/game/audio_manager.dart';
 import '/models/player_data.dart';
@@ -21,7 +19,7 @@ enum DinoAnimationStates {
 
 // This represents the dino character of this game.
 class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
-    with HasHitboxes, Collidable, HasGameRef<DinoRun> {
+    with CollisionCallbacks, HasGameRef<DinoRun> {
   // A map of all the animation states and their corresponding animations.
   static final _animationMap = {
     DinoAnimationStates.idle: SpriteAnimationData.sequenced(
@@ -81,8 +79,13 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
     _reset();
 
     // Add a hitbox for dino.
-    final shape = HitboxRectangle(relation: Vector2(0.5, 0.7));
-    addHitbox(shape);
+    add(
+      RectangleHitbox.relative(
+        Vector2(0.5, 0.7),
+        parentSize: size,
+        position: Vector2(size.x * 0.5, size.y * 0.3) / 2,
+      ),
+    );
     yMax = y;
 
     /// Set the callback for [_hitTimer].
@@ -118,15 +121,12 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
 
   // Gets called when dino collides with other Collidables.
   @override
-  void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     // Call hit only if other component is an Enemy and dino
     // is not already in hit state.
     if ((other is Enemy) && (!isHit)) {
-      badHit();
-    } else if ((other is Friend) && (!isHit)) {
-      goodHit();
+      hit();
     }
-
     super.onCollision(intersectionPoints, other);
   }
 
@@ -146,7 +146,7 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
   // This method changes the animation state to
   /// [DinoAnimationStates.hit], plays the hit sound
   /// effect and reduces the player life by 1.
-  void badHit() {
+  void hit() {
     isHit = true;
     AudioManager.instance.playSfx('hurt7.wav');
     current = DinoAnimationStates.hit;
@@ -154,18 +154,12 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
     playerData.lives -= 1;
   }
 
-  void goodHit() {
-    isHit = true;
-    AudioManager.instance.playSfx('hurt7.wav');
-    current = DinoAnimationStates.hit;
-    _hitTimer.start();
-    playerData.lives += 1;
-  }
-
   // This method reset some of the important properties
   // of this component back to normal.
   void _reset() {
-    shouldRemove = false;
+    if (isMounted) {
+      removeFromParent();
+    }
     anchor = Anchor.bottomLeft;
     position = Vector2(32, gameRef.size.y - 22);
     size = Vector2.all(24);
