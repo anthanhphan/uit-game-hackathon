@@ -18,6 +18,7 @@ import '/game/bonus_manager.dart';
 
 import '/models/player_data.dart';
 import '/widgets/pause_menu.dart';
+import '/widgets/shop_menu.dart';
 import '/widgets/game_over_menu.dart';
 
 // This is the main flame game class.
@@ -188,6 +189,9 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     }
 
     if (playerData.currentTime == 0.0 && !isLoaded) {
+      overlays.add(ShopMenu.id);
+      overlays.remove(Hud.id);
+      pauseEngine();
       isLoaded = true;
 
       _enemyManager.removeAllObjects();
