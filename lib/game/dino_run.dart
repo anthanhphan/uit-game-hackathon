@@ -8,8 +8,12 @@ import 'package:flame/components.dart';
 import '/game/dino.dart';
 import '/widgets/hud.dart';
 import '/models/settings.dart';
+
 import '/game/audio_manager.dart';
 import '/game/enemy_manager.dart';
+import '/game/friend_manager.dart';
+import '/game/gas_manager.dart';
+
 import '/models/player_data.dart';
 import '/widgets/pause_menu.dart';
 import '/widgets/game_over_menu.dart';
@@ -41,6 +45,8 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
   late Settings settings;
   late PlayerData playerData;
   late EnemyManager _enemyManager;
+  late FriendManager _friendManager;
+  late GasManager _gasManager;
 
   // This method get called while flame is preparing this game.
   @override
@@ -86,16 +92,24 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
   void startGamePlay() {
     _dino = Dino(images.fromCache('DinoSprites - tard.png'), playerData);
     _enemyManager = EnemyManager();
+    _friendManager = FriendManager();
+    _gasManager = GasManager();
 
     add(_dino);
     add(_enemyManager);
+    add(_friendManager);
+    add(_gasManager);
   }
 
   // This method remove all the actors from the game.
   void _disconnectActors() {
     _dino.removeFromParent();
-    _enemyManager.removeAllEnemies();
+    _enemyManager.removeAllObjects();
     _enemyManager.removeFromParent();
+    _friendManager.removeAllObjects();
+    _friendManager.removeFromParent();
+    _gasManager.removeAllObjects();
+    _gasManager.removeFromParent();
   }
 
   // This method reset the whole game world to initial state.
