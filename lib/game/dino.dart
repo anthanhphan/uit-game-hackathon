@@ -4,6 +4,9 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
 import '/game/enemy.dart';
+import '/game/friend.dart';
+import '/game/gas.dart';
+
 import '/game/dino_run.dart';
 import '/game/audio_manager.dart';
 import '/models/player_data.dart';
@@ -77,9 +80,15 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
   @override
   void onMount() {
     // First reset all the important properties, because onMount()
-    // will be called even while restarting the game.
-    _reset();
-
+    if (isMounted) {
+      removeFromParent();
+    }
+    anchor = Anchor.bottomLeft;
+    position = Vector2(32, gameRef.size.y - 22);
+    size = Vector2.all(24);
+    current = DinoAnimationStates.run;
+    isHit = false;
+    speedY = 0.0;
     // adding timer component into game
     _countdown.onTick = () {
       if (gameRef.playerData.currentTime > 0) {
@@ -134,8 +143,16 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     // Call hit only if other component is an Enemy and dino
     // is not already in hit state.
-    if ((other is Enemy) && (!isHit)) {
-      hit();
+    if (gameRef.playerData.currentTime > 0) {
+      if ((other is Enemy) && (!isHit)) {
+        badHit();
+      }
+      if ((other is Friend) && (!isHit)) {
+        goodHit();
+      }
+      if ((other is Gas) && (!isHit)) {
+        gasHit();
+      }
     }
     super.onCollision(intersectionPoints, other);
   }
@@ -156,12 +173,32 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
   // This method changes the animation state to
   /// [DinoAnimationStates.hit], plays the hit sound
   /// effect and reduces the player life by 1.
-  void hit() {
+  void badHit() {
     isHit = true;
     AudioManager.instance.playSfx('hurt7.wav');
     current = DinoAnimationStates.hit;
     _hitTimer.start();
     playerData.lives -= 1;
+  }
+
+  void goodHit() {
+    isHit = true;
+    AudioManager.instance.playSfx('hurt7.wav');
+    current = DinoAnimationStates.hit;
+    _hitTimer.start();
+    playerData.lives += 1;
+  }
+
+  void gasHit() {
+    isHit = true;
+    AudioManager.instance.playSfx('hurt7.wav');
+    current = DinoAnimationStates.hit;
+    _hitTimer.start();
+    if (playerData.lives == 1) {
+      playerData.lives -= 1;
+    } else {
+      playerData.lives = 1;
+    }
   }
 
   // This method reset some of the important properties

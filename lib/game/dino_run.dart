@@ -8,9 +8,13 @@ import 'package:flame/components.dart';
 import '/game/dino.dart';
 import '/widgets/hud.dart';
 import '/models/settings.dart';
+
 import '/game/audio_manager.dart';
 import '/game/enemy_manager.dart';
+import '/game/friend_manager.dart';
+import '/game/gas_manager.dart';
 import '/game/boss_manager.dart';
+
 import '/models/player_data.dart';
 import '/widgets/pause_menu.dart';
 import '/widgets/game_over_menu.dart';
@@ -44,8 +48,10 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
   late Settings settings;
   late PlayerData playerData;
   late EnemyManager _enemyManager;
+  late FriendManager _friendManager;
+  late GasManager _gasManager;
   late BossManager _bossManager;
-  late bool isLoaded;
+  late bool isLoaded = false;
   late Vector2 parallaxSpeed;
   late ParallaxComponent parallaxBackground;
   late ParallaxComponent parallaxBackgroundStop;
@@ -112,19 +118,26 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     _dino = Dino(images.fromCache('DinoSprites - tard.png'), playerData);
     _enemyManager = EnemyManager();
     _bossManager = BossManager();
+    _friendManager = FriendManager();
+    _gasManager = GasManager();
 
     add(_dino);
     add(_enemyManager);
+    add(_friendManager);
+    add(_gasManager);
   }
 
   // This method remove all the actors from the game.
   void _disconnectActors() {
     _dino.removeFromParent();
-    _enemyManager.removeAllEnemies();
+    _enemyManager.removeAllObjects();
     _enemyManager.removeFromParent();
 
-    _bossManager.removeAllEnemies();
-    _bossManager.removeFromParent();
+    _friendManager.removeAllObjects();
+    _friendManager.removeFromParent();
+
+    _gasManager.removeAllObjects();
+    _gasManager.removeFromParent();
   }
 
   // This method reset the whole game world to initial state.
@@ -153,12 +166,20 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
       isLoaded = true;
       parallaxSpeed = Vector2(0, 0);
 
+      _enemyManager.removeAllObjects();
+      _enemyManager.removeFromParent();
+
+      _friendManager.removeAllObjects();
+      _friendManager.removeFromParent();
+
+      _gasManager.removeAllObjects();
+      _gasManager.removeFromParent();
+
       remove(parallaxBackground);
       remove(_dino);
-
-      _enemyManager.removeAllEnemies();
-      _enemyManager.removeFromParent();
       remove(_enemyManager);
+      remove(_friendManager);
+      remove(_gasManager);
 
       _newDino = Dino(images.fromCache('DinoSprites - tard.png'), playerData);
 
