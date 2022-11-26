@@ -7,61 +7,13 @@ import 'package:flutter/material.dart';
 
 import '/game/dino_run.dart';
 import '/models/boss_data.dart';
+import 'bullet.dart';
+import 'LifeBar.dart';
 
 // This represents an enemy in the game world.
 class Boss extends SpriteAnimationComponent
     with CollisionCallbacks, HasGameRef<DinoRun> {
   // The data required for creation of this enemy.
-
-  List<RectangleComponent> lifeBarElements = List<RectangleComponent>.filled(
-      3, RectangleComponent(size: Vector2(1, 1)),
-      growable: false);
-
-  createLifeBar() {
-    var lifeBarSize = Vector2(24, 6);
-    var backgroundFillColor = Paint()
-      ..color = Colors.grey.withOpacity(0.35)
-      ..style = PaintingStyle.fill;
-    var outlineColor = Paint()
-      ..color = Colors.white
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
-    var lifeDangerColor = Paint()
-      ..color = Colors.red
-      ..style = PaintingStyle.fill;
-
-    // All positions here are in relation to the parent's position
-    lifeBarElements = [
-      //
-      // The outline of the life bar
-      RectangleComponent(
-        position: Vector2(size.x - lifeBarSize.x - 52, -lifeBarSize.y - 2),
-        size: lifeBarSize,
-        angle: 0,
-        paint: outlineColor,
-      ),
-      //
-      // The fill portion of the bar. The semi-transparent portion
-      RectangleComponent(
-        position: Vector2(size.x - lifeBarSize.x - 52, -lifeBarSize.y - 2),
-        size: lifeBarSize,
-        angle: 0,
-        paint: backgroundFillColor,
-      ),
-      //
-      // The actual life percentage as a fill of red or green
-      RectangleComponent(
-        position: Vector2(size.x - lifeBarSize.x - 52, -lifeBarSize.y - 2),
-        size: Vector2(24, 6),
-        angle: 0,
-        paint: lifeDangerColor,
-      ),
-    ];
-
-    //
-    // add all lifebar elements to the children of the Square instance
-    addAll(lifeBarElements);
-  }
 
   final BossData bossData;
 
@@ -90,11 +42,22 @@ class Boss extends SpriteAnimationComponent
     );
   }
 
+  late LifeBar lifeBar;
+
+  createLifeBar() {
+    lifeBar = LifeBar.initData(size,
+        size: Vector2(40, 5), placement: LifeBarPlacement.left);
+    //
+    // add all lifebar element to the children of the Square instance
+    add(lifeBar);
+  }
+
   @override
-  void onMount() {
+  Future<void> onMount() async {
+    createLifeBar();
+
     // Reduce the size of enemy as they look too
     // big compared to the dino.
-    createLifeBar();
     _bulletCreation = BulletManager();
     size *= 0.6;
     _switchDirection.onTick = () {
@@ -105,8 +68,12 @@ class Boss extends SpriteAnimationComponent
 
     _shootCountDown.onTick = () {
       positionY = position.y;
-      add(_bulletCreation.spawnBullet(gameRef.size.x - 28, 50,
-          gameRef.images.fromCache('Bullet/fire_bullet.png')));
+      add(_bulletCreation.spawnBullet(
+          40,
+          50,
+          gameRef.images.fromCache('Bullet/fire_bullet.png'),
+          Vector2(100, 30),
+          550));
     };
 
     // Add a hitbox for this enemy.
@@ -136,8 +103,19 @@ class Boss extends SpriteAnimationComponent
       removeFromParent();
       gameRef.playerData.currentScore += 1;
     }
+
     _shootCountDown.update(dt);
     _switchDirection.update(dt);
+    // lifeBarElements.update(dt);
     super.update(dt);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is Bullet) {
+      // print("hp");
+      lifeBar.decrementCurrentLifeBy(10);
+    }
+    super.onCollision(intersectionPoints, other);
   }
 }

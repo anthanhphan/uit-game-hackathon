@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:dino_run/game/bullet.dart';
+import 'package:dino_run/game/bullet_manager.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
@@ -79,8 +80,16 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
   Dino(Image image, this.playerData)
       : super.fromFrameData(image, _animationMap);
 
+  late double positionY;
+  late BulletManager _bulletCreation;
+  final Timer _shootCountDown = Timer(
+    0.75,
+    repeat: true,
+  );
+
   @override
   void onMount() {
+    _bulletCreation = BulletManager();
     // First reset all the important properties, because onMount()
     _reset();
     // adding timer component into game
@@ -89,6 +98,18 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
         gameRef.playerData.currentTime--;
       }
     };
+
+    if (gameRef.playerData.currentTime <= 0) {
+      _shootCountDown.onTick = () {
+        positionY = position.y;
+        add(_bulletCreation.spawnBullet(
+            20,
+            100,
+            gameRef.images.fromCache('Bullet/blue_flame.png'),
+            Vector2(100, 60),
+            -550));
+      };
+    }
 
     // Add a hitbox for dino.
     add(
@@ -111,6 +132,17 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
 
   @override
   void update(double dt) {
+    if (gameRef.playerData.currentTime <= 0) {
+      _shootCountDown.onTick = () {
+        positionY = position.y;
+        add(_bulletCreation.spawnBullet(
+            20,
+            100,
+            gameRef.images.fromCache('Bullet/blue_flame.png'),
+            Vector2(100, 60),
+            -550));
+      };
+    }
     // v = u + at
     speedY += gravity * dt;
 
@@ -129,6 +161,7 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
 
     _countdown.update(dt);
     _hitTimer.update(dt);
+    _shootCountDown.update(dt);
     super.update(dt);
   }
 

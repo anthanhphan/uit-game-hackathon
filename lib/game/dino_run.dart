@@ -45,6 +45,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     'parallax/plx-5.png',
     'parallax/plx-6.png',
     'Bullet/fire_bullet.png',
+    'Bullet/blue_flame.png',
   ];
 
   // List of all the audio assets.
@@ -139,7 +140,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
       velocityMultiplierDelta: Vector2(1.4, 0),
     );
 
-    playerData.currentTime = 0;
+    playerData.currentTime = 30;
     add(parallaxBackground);
     add(_dino);
     add(_enemyManager);

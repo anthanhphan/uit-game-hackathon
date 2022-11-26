@@ -11,8 +11,8 @@ import '/models/bullet_data.dart';
 // interval of time depending upon players current score.
 class BulletManager extends Component with HasGameRef<DinoRun> {
   // A list to hold data for all the enemies.
-  final List<BulletData> _data = [];
 
+  final List<BulletData> _data = [];
   // Random generator required for randomly selecting enemy type.
   final Random _random = Random();
 
@@ -24,7 +24,8 @@ class BulletManager extends Component with HasGameRef<DinoRun> {
   // }
 
   // This method is responsible for spawning a random enemy.
-  Bullet spawnBullet(double bulletX, double bulletY, Image bulletImage) {
+  Bullet spawnBullet(double bulletX, double bulletY, Image bulletImage,
+      Vector2 bulletSize, double speed) {
     if (_data.isNotEmpty) {
       removeFromParent();
     }
@@ -33,8 +34,8 @@ class BulletManager extends Component with HasGameRef<DinoRun> {
         image: bulletImage,
         nFrames: 1,
         stepTime: 0.1,
-        textureSize: Vector2(100, 30),
-        speedX: 550,
+        textureSize: bulletSize,
+        speedX: speed,
         canFly: false,
       ),
     );
@@ -47,7 +48,7 @@ class BulletManager extends Component with HasGameRef<DinoRun> {
     bullet.anchor = Anchor.bottomLeft;
     bullet.position = Vector2(
       bulletX,
-      50,
+      30,
     );
 
     // Due to the size of our viewport, we can
