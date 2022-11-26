@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import '/widgets/hud.dart';
 import '/game/dino_run.dart';
-import '/widgets/main_menu.dart';
 import '/game/audio_manager.dart';
 import '/models/player_data.dart';
 

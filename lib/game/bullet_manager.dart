@@ -55,6 +55,7 @@ class BulletManager extends Component with HasGameRef<DinoRun> {
     bullet.size = bulletData.textureSize;
     return bullet;
   }
+
   //
   @override
   void onMount() {
@@ -67,11 +68,6 @@ class BulletManager extends Component with HasGameRef<DinoRun> {
       // As soon as this component is mounted, initilize all the data.
     }
     super.onMount();
-  }
-
-  @override
-  void update(double dt) {
-    super.update(dt);
   }
 
   void removeAllEnemies() {

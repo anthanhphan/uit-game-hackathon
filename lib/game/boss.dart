@@ -1,6 +1,5 @@
-import 'dart:ui';
+// ignore_for_file: avoid_print
 
-import 'package:dino_run/game/bullet.dart';
 import 'package:dino_run/game/bullet_manager.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
@@ -16,8 +15,7 @@ class Boss extends SpriteAnimationComponent
 
   List<RectangleComponent> lifeBarElements = List<RectangleComponent>.filled(
       3, RectangleComponent(size: Vector2(1, 1)),
-      growable: false
-  );
+      growable: false);
 
   createLifeBar() {
     var lifeBarSize = Vector2(24, 6);
@@ -54,7 +52,7 @@ class Boss extends SpriteAnimationComponent
       // The actual life percentage as a fill of red or green
       RectangleComponent(
         position: Vector2(size.x - lifeBarSize.x - 52, -lifeBarSize.y - 2),
-        size: Vector2(6, 6),
+        size: Vector2(24, 6),
         angle: 0,
         paint: lifeDangerColor,
       ),
@@ -68,7 +66,7 @@ class Boss extends SpriteAnimationComponent
   final BossData bossData;
 
   final Timer _switchDirection = Timer(
-    2,
+    1,
     repeat: true,
   );
   late double positionY;
@@ -76,7 +74,8 @@ class Boss extends SpriteAnimationComponent
 
   bool _moveUp = true;
 
-  final Timer _shootCountDown = Timer(1,
+  final Timer _shootCountDown = Timer(
+    0.75,
     repeat: true,
   );
 
@@ -106,7 +105,8 @@ class Boss extends SpriteAnimationComponent
 
     _shootCountDown.onTick = () {
       positionY = position.y;
-      add(_bulletCreation.spawnBullet(gameRef.size.x - 28, 50, gameRef.images.fromCache('Bullet/fire_bullet.png')));
+      add(_bulletCreation.spawnBullet(gameRef.size.x - 28, 50,
+          gameRef.images.fromCache('Bullet/fire_bullet.png')));
     };
 
     // Add a hitbox for this enemy.
