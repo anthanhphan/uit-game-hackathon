@@ -59,11 +59,11 @@ class GasManager extends Component with HasGameRef<DinoRun> {
       // As soon as this component is mounted, initilize all the data.
       _data.addAll([
         GasData(
-          image: gameRef.images.fromCache('AngryPig/Walk (36x30).png'),
-          nFrames: 16,
-          stepTime: 0.1,
-          textureSize: Vector2(36, 30),
-          speedX: 300,
+          image: gameRef.images.fromCache('Gas/Gas (46x50).png'),
+          nFrames: 1,
+          stepTime: 0.05,
+          textureSize: Vector2(46, 50),
+          speedX: 200,
           canFly: false,
         ),
       ]);

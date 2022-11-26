@@ -54,7 +54,7 @@ class DinoRunApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Dino Run',
+      title: 'Rubbish Man',
       theme: ThemeData(
         fontFamily: 'Audiowide',
         primarySwatch: Colors.blue,

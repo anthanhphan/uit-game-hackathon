@@ -30,9 +30,14 @@ flutter:
   assets:
     - assets/images/
     - assets/images/parallax/
-    - assets/images/AngryPig/
     - assets/images/Bat/
     - assets/images/Rino/
+    - assets/images/Gas/
+    - assets/images/Tincan/
+    - assets/images/Paper/
+    - assets/images/Lion/
+    - assets/images/Owl/
+    - assets/images/Penguin/
     - assets/audio/
 
   fonts:

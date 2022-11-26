@@ -59,11 +59,11 @@ class FriendManager extends Component with HasGameRef<DinoRun> {
       // As soon as this component is mounted, initilize all the data.
       _data.addAll([
         FriendData(
-          image: gameRef.images.fromCache('Bat/Flying (46x30).png'),
-          nFrames: 7,
+          image: gameRef.images.fromCache('Paper/Paper (32x35).png'),
+          nFrames: 10,
           stepTime: 0.1,
-          textureSize: Vector2(46, 30),
-          speedX: 100,
+          textureSize: Vector2(32, 35),
+          speedX: 150,
           canFly: true,
         ),
       ]);
