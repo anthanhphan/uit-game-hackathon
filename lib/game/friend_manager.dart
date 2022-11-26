@@ -16,7 +16,7 @@ class FriendManager extends Component with HasGameRef<DinoRun> {
   final Random _random = Random();
 
   // Timer to decide when to spawn next enemy.
-  final Timer _timer = Timer(2, repeat: true);
+  final Timer _timer = Timer(5, repeat: true);
 
   FriendManager() {
     _timer.onTick = spawnRandomEnemy;
@@ -59,11 +59,11 @@ class FriendManager extends Component with HasGameRef<DinoRun> {
       // As soon as this component is mounted, initilize all the data.
       _data.addAll([
         FriendData(
-          image: gameRef.images.fromCache('Paper/Paper (32x35).png'),
-          nFrames: 10,
+          image: gameRef.images.fromCache('Bread/Bread (24x25).png'),
+          nFrames: 12,
           stepTime: 0.1,
-          textureSize: Vector2(32, 35),
-          speedX: 100,
+          textureSize: Vector2(24, 25),
+          speedX: 150,
           canFly: true,
         ),
       ]);

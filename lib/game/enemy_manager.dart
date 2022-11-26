@@ -16,7 +16,7 @@ class EnemyManager extends Component with HasGameRef<DinoRun> {
   final Random _random = Random();
 
   // Timer to decide when to spawn next enemy.
-  final Timer _timer = Timer(2, repeat: true);
+  final Timer _timer = Timer(3, repeat: true);
 
   EnemyManager() {
     _timer.onTick = spawnRandomEnemy;
@@ -59,17 +59,9 @@ class EnemyManager extends Component with HasGameRef<DinoRun> {
       // As soon as this component is mounted, initilize all the data.
       _data.addAll([
         EnemyData(
-          image: gameRef.images.fromCache('Bat/Flying (46x30).png'),
-          nFrames: 7,
-          stepTime: 0.05,
-          textureSize: Vector2(46, 30),
-          speedX: 150,
-          canFly: true,
-        ),
-        EnemyData(
           image: gameRef.images.fromCache('Rino/Run (52x34).png'),
           nFrames: 6,
-          stepTime: 0.05,
+          stepTime: 0.1,
           textureSize: Vector2(52, 34),
           speedX: 100,
           canFly: false,
@@ -77,23 +69,15 @@ class EnemyManager extends Component with HasGameRef<DinoRun> {
         EnemyData(
           image: gameRef.images.fromCache('Tincan/Tincan (36x30).png'),
           nFrames: 6,
-          stepTime: 0.05,
+          stepTime: 0.1,
           textureSize: Vector2(36, 30),
-          speedX: 50,
-          canFly: false,
-        ),
-        EnemyData(
-          image: gameRef.images.fromCache('Lion/Lion (80x30).png'),
-          nFrames: 9,
-          stepTime: 0.01,
-          textureSize: Vector2(80, 30),
-          speedX: 200,
+          speedX: 100,
           canFly: false,
         ),
         EnemyData(
           image: gameRef.images.fromCache('Owl/Owl (45x45).png'),
           nFrames: 22,
-          stepTime: 0.05,
+          stepTime: 0.1,
           textureSize: Vector2(45, 45),
           speedX: 100,
           canFly: true,
@@ -101,32 +85,16 @@ class EnemyManager extends Component with HasGameRef<DinoRun> {
         EnemyData(
           image: gameRef.images.fromCache('Penguin/Penguin (25x25).png'),
           nFrames: 22,
-          stepTime: 0.05,
+          stepTime: 0.1,
           textureSize: Vector2(25, 25),
           speedX: 70,
           canFly: false,
         ),
         EnemyData(
-          image: gameRef.images.fromCache('Tree/Tree (40x60).png'),
-          nFrames: 26,
-          stepTime: 0.05,
-          textureSize: Vector2(40, 60),
-          speedX: 50,
-          canFly: false,
-        ),
-        EnemyData(
           image: gameRef.images.fromCache('Bush/Bush (35x30).png'),
           nFrames: 13,
-          stepTime: 0.05,
+          stepTime: 0.5,
           textureSize: Vector2(35, 30),
-          speedX: 50,
-          canFly: false,
-        ),
-        EnemyData(
-          image: gameRef.images.fromCache('Pandas/Panda (40x39).png'),
-          nFrames: 6,
-          stepTime: 0.05,
-          textureSize: Vector2(40, 39),
           speedX: 70,
           canFly: false,
         )

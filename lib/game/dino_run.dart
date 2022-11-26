@@ -24,18 +24,16 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
   // List of all the image assets.
   static const _imageAssets = [
     'DinoSprites - tard.png',
-    'Bat/Flying (46x30).png',
     'Bat/Flying (92x60).png',
     'Rino/Run (52x34).png',
     'Gas/Gas (46x50).png',
     'Tincan/Tincan (36x30).png',
     'Paper/Paper (32x35).png',
-    'Lion/Lion (80x30).png',
     'Owl/Owl (45x45).png',
     'Penguin/Penguin (25x25).png',
     'Tree/Tree (40x60).png',
     'Bush/Bush (35x30).png',
-    'Pandas/Panda (40x39).png',
+    'Bread/Bread (24x25).png',
     'parallax/plx-1.png',
     'parallax/plx-2.png',
     'parallax/plx-3.png',
@@ -129,6 +127,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     _friendManager = FriendManager();
     _gasManager = GasManager();
 
+    playerData.currentTime = 30;
     add(_dino);
     add(_enemyManager);
     add(_friendManager);
