@@ -44,7 +44,6 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
   ];
 
   late Dino _dino;
-  late Dino _newDino;
   late Settings settings;
   late PlayerData playerData;
   late EnemyManager _enemyManager;
@@ -54,7 +53,6 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
   late bool isLoaded = false;
   late Vector2 parallaxSpeed;
   late ParallaxComponent parallaxBackground;
-  late ParallaxComponent parallaxBackgroundStop;
 
   // This method get called while flame is preparing this game.
   @override
@@ -94,19 +92,6 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
       velocityMultiplierDelta: Vector2(1.4, 0),
     );
 
-    parallaxBackgroundStop = await loadParallaxComponent(
-      [
-        ParallaxImageData('parallax/plx-1.png'),
-        ParallaxImageData('parallax/plx-2.png'),
-        ParallaxImageData('parallax/plx-3.png'),
-        ParallaxImageData('parallax/plx-4.png'),
-        ParallaxImageData('parallax/plx-5.png'),
-        ParallaxImageData('parallax/plx-6.png'),
-      ],
-      baseVelocity: Vector2(0, 0),
-      velocityMultiplierDelta: Vector2(1.4, 0),
-    );
-
     add(parallaxBackground);
 
     return super.onLoad();
@@ -120,8 +105,11 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     _bossManager = BossManager();
     _friendManager = FriendManager();
     _gasManager = GasManager();
+    isLoaded = false;
 
+    playerData.currentTime = 10;
     add(_dino);
+
     add(_enemyManager);
     add(_friendManager);
     add(_gasManager);
@@ -129,15 +117,23 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
 
   // This method remove all the actors from the game.
   void _disconnectActors() {
-    _dino.removeFromParent();
-    _enemyManager.removeAllObjects();
-    _enemyManager.removeFromParent();
+    if (playerData.currentTime > 0) {
+      // print("hello");
+      _dino.removeFromParent();
+      _enemyManager.removeAllObjects();
+      _enemyManager.removeFromParent();
 
-    _friendManager.removeAllObjects();
-    _friendManager.removeFromParent();
+      _friendManager.removeAllObjects();
+      _friendManager.removeFromParent();
 
-    _gasManager.removeAllObjects();
-    _gasManager.removeFromParent();
+      _gasManager.removeAllObjects();
+      _gasManager.removeFromParent();
+    } else {
+      _dino.removeFromParent();
+
+      _bossManager.removeAllEnemies();
+      _bossManager.removeFromParent();
+    }
   }
 
   // This method reset the whole game world to initial state.
@@ -147,12 +143,13 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
 
     // Reset player data to inital values.
     playerData.currentScore = 0;
+    playerData.currentTime = 10;
     playerData.lives = 5;
   }
 
   // This method gets called for each tick/frame of the game.
   @override
-  void update(double dt) {
+  void update(double dt) async {
     // If number of lives is 0 or less, game is over.
     if (playerData.lives <= 0) {
       overlays.add(GameOverMenu.id);
@@ -162,9 +159,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     }
 
     if (playerData.currentTime == 0.0 && !isLoaded) {
-      playerData.currentTime = 0;
       isLoaded = true;
-      parallaxSpeed = Vector2(0, 0);
 
       _enemyManager.removeAllObjects();
       _enemyManager.removeFromParent();
@@ -175,18 +170,36 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
       _gasManager.removeAllObjects();
       _gasManager.removeFromParent();
 
-      remove(parallaxBackground);
-      remove(_dino);
-      remove(_enemyManager);
-      remove(_friendManager);
-      remove(_gasManager);
+      _dino.removeFromParent();
 
-      _newDino = Dino(images.fromCache('DinoSprites - tard.png'), playerData);
+      parallaxBackground.removeFromParent();
 
-      add(parallaxBackgroundStop);
-      add(_newDino);
+      parallaxBackground = await loadParallaxComponent(
+        [
+          ParallaxImageData('parallax/plx-1.png'),
+          ParallaxImageData('parallax/plx-2.png'),
+          ParallaxImageData('parallax/plx-3.png'),
+          ParallaxImageData('parallax/plx-4.png'),
+          ParallaxImageData('parallax/plx-5.png'),
+          ParallaxImageData('parallax/plx-6.png'),
+        ],
+        baseVelocity: Vector2(0, 0),
+        velocityMultiplierDelta: Vector2(1.4, 0),
+      );
+
+      _dino = Dino(images.fromCache('DinoSprites - tard.png'), playerData);
+      _enemyManager = EnemyManager();
+      _bossManager = BossManager();
+      isLoaded = true;
+
+      add(parallaxBackground);
+      add(_dino);
       add(_bossManager);
     }
+    if (isLoaded) {
+      playerData.currentTime = 0;
+    }
+    print("out: ${playerData.currentTime}");
 
     super.update(dt);
   }
@@ -198,9 +211,6 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     // When game is in playing state, only Hud will be the active overlay.
     if (overlays.isActive(Hud.id)) {
       _dino.jump();
-      if (isLoaded == true) {
-        _newDino.jump();
-      }
     }
     super.onTapDown(info);
   }

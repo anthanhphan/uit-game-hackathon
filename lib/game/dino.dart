@@ -80,15 +80,7 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
   @override
   void onMount() {
     // First reset all the important properties, because onMount()
-    if (isMounted) {
-      removeFromParent();
-    }
-    anchor = Anchor.bottomLeft;
-    position = Vector2(32, gameRef.size.y - 22);
-    size = Vector2.all(24);
-    current = DinoAnimationStates.run;
-    isHit = false;
-    speedY = 0.0;
+    _reset();
     // adding timer component into game
     _countdown.onTick = () {
       if (gameRef.playerData.currentTime > 0) {
@@ -213,6 +205,6 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
     current = DinoAnimationStates.run;
     isHit = false;
     speedY = 0.0;
-    gameRef.playerData.currentTime = 5;
+    gameRef.playerData.currentTime = 10;
   }
 }
