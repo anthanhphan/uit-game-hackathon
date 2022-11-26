@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:hive/hive.dart';
@@ -14,6 +16,7 @@ import '/game/enemy_manager.dart';
 import '/game/friend_manager.dart';
 import '/game/gas_manager.dart';
 import '/game/boss_manager.dart';
+import '/game/bonus_manager.dart';
 
 import '/models/player_data.dart';
 import '/widgets/pause_menu.dart';
@@ -50,7 +53,10 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
   late FriendManager _friendManager;
   late GasManager _gasManager;
   late BossManager _bossManager;
-  late bool isLoaded = false;
+  late BonusManager _bonusManager;
+
+  @override
+  late bool isLoaded;
   late Vector2 parallaxSpeed;
   late ParallaxComponent parallaxBackground;
 
@@ -105,6 +111,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     _bossManager = BossManager();
     _friendManager = FriendManager();
     _gasManager = GasManager();
+    _bonusManager = BonusManager();
     isLoaded = false;
 
     playerData.currentTime = 10;
@@ -113,6 +120,7 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     add(_enemyManager);
     add(_friendManager);
     add(_gasManager);
+    add(_bonusManager);
   }
 
   // This method remove all the actors from the game.
@@ -128,6 +136,9 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
 
       _gasManager.removeAllObjects();
       _gasManager.removeFromParent();
+
+      _bonusManager.removeAllEnemies();
+      _bonusManager.removeFromParent();
     } else {
       _dino.removeFromParent();
 
@@ -169,6 +180,9 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
 
       _gasManager.removeAllObjects();
       _gasManager.removeFromParent();
+
+      _bonusManager.removeAllEnemies();
+      _bonusManager.removeFromParent();
 
       _dino.removeFromParent();
 

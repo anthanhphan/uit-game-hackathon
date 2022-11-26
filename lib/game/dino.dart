@@ -6,6 +6,7 @@ import 'package:flame/components.dart';
 import '/game/enemy.dart';
 import '/game/friend.dart';
 import '/game/gas.dart';
+import '/game/bonus.dart';
 
 import '/game/dino_run.dart';
 import '/game/audio_manager.dart';
@@ -145,6 +146,10 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
       if ((other is Gas) && (!isHit)) {
         gasHit();
       }
+
+      if ((other is Bonus) && (!isHit)) {
+        pointHit();
+      }
     }
     super.onCollision(intersectionPoints, other);
   }
@@ -171,6 +176,14 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
     current = DinoAnimationStates.hit;
     _hitTimer.start();
     playerData.lives -= 1;
+  }
+
+  void pointHit() {
+    isHit = true;
+    AudioManager.instance.playSfx('hurt7.wav');
+    current = DinoAnimationStates.hit;
+    _hitTimer.start();
+    gameRef.playerData.currentScore += 1;
   }
 
   void goodHit() {
