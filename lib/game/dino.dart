@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 
 import '/game/enemy.dart';
 import '/game/friend.dart';
+import '/game/boss.dart';
 import '/game/dino_run.dart';
 import '/game/audio_manager.dart';
 import '/models/player_data.dart';
@@ -122,10 +123,10 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
     // is not already in hit state.
     if ((other is Enemy) && (!isHit)) {
       badHit();
-    }
-    if ((other is Friend) && (!isHit)) {
+    } else if ((other is Friend) && (!isHit)) {
       goodHit();
     }
+
     super.onCollision(intersectionPoints, other);
   }
 
