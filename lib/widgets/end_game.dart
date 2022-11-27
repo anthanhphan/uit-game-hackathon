@@ -11,14 +11,14 @@ import '/game/audio_manager.dart';
 
 // This represents the game over overlay,
 // displayed with dino runs out of lives.
-class GameOverMenu extends StatelessWidget {
+class EndGameMenu extends StatelessWidget {
   // An unique identified for this overlay.
-  static const id = 'GameOverMenu';
+  static const id = 'EndGameMenu';
 
   // Reference to parent game.
   final DinoRun gameRef;
 
-  const GameOverMenu(this.gameRef, {Key? key}) : super(key: key);
+  const EndGameMenu(this.gameRef, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,20 +29,20 @@ class GameOverMenu extends StatelessWidget {
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: Card(
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             color: Colors.black.withAlpha(100),
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 100),
+                const EdgeInsets.symmetric(vertical: 20, horizontal: 100),
                 child: Wrap(
                   direction: Axis.vertical,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   spacing: 10,
                   children: [
                     const Text(
-                      'Game Over',
+                      'Congratulations!',
                       style: TextStyle(fontSize: 40, color: Colors.white),
                     ),
                     Selector<PlayerData, int>(
@@ -57,13 +57,13 @@ class GameOverMenu extends StatelessWidget {
                     ),
                     ElevatedButton(
                       child: const Text(
-                        'Restart',
+                        'Play Again',
                         style: TextStyle(
                           fontSize: 30,
                         ),
                       ),
                       onPressed: () {
-                        gameRef.overlays.remove(GameOverMenu.id);
+                        gameRef.overlays.remove(EndGameMenu.id);
                         gameRef.overlays.add(Hud.id);
                         gameRef.resumeEngine();
                         gameRef.reset();
@@ -79,7 +79,7 @@ class GameOverMenu extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        gameRef.overlays.remove(GameOverMenu.id);
+                        gameRef.overlays.remove(EndGameMenu.id);
                         gameRef.overlays.add(MainMenu.id);
                         gameRef.resumeEngine();
                         gameRef.reset();

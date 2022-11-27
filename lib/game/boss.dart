@@ -3,7 +3,6 @@
 import 'package:dino_run/game/bullet_manager.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
 
 import '/game/dino_run.dart';
 import '/models/boss_data.dart';
@@ -120,8 +119,10 @@ class Boss extends SpriteAnimationComponent
   }
 
   void bossHit() {
-    gameRef.playerData.bosshp -= 1;
-    isHit = true;
-    _hitTimer.start();
+    if (gameRef.playerData.currentTime <= 0) {
+      gameRef.playerData.bosshp -= 1;
+      isHit = true;
+      _hitTimer.start();
+    }
   }
 }

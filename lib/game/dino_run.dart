@@ -1,4 +1,5 @@
 import 'package:dino_run/game/bullet_manager.dart';
+import 'package:dino_run/widgets/end_game.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:hive/hive.dart';
@@ -178,8 +179,9 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
 
     // Reset player data to inital values.
     playerData.currentScore = 0;
-    playerData.currentTime = 0;
+    playerData.currentTime = 30;
     playerData.lives = 5;
+    playerData.bosshp = 10;
   }
 
   // This method gets called for each tick/frame of the game.
@@ -188,6 +190,13 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
     // If number of lives is 0 or less, game is over.
     if (playerData.lives <= 0) {
       overlays.add(GameOverMenu.id);
+      overlays.remove(Hud.id);
+      pauseEngine();
+      AudioManager.instance.pauseBgm();
+    }
+
+    if (playerData.bosshp <= 0) {
+      overlays.add(EndGameMenu.id);
       overlays.remove(Hud.id);
       pauseEngine();
       AudioManager.instance.pauseBgm();
@@ -298,7 +307,8 @@ class DinoRun extends FlameGame with TapDetector, HasCollisionDetection {
         // On resume, if active overlay is not PauseMenu,
         // resume the engine (lets the parallax effect play).
         if (!(overlays.isActive(PauseMenu.id)) &&
-            !(overlays.isActive(GameOverMenu.id))) {
+            !(overlays.isActive(GameOverMenu.id)) &&
+            !(overlays.isActive(EndGameMenu.id))) {
           resumeEngine();
         }
         break;

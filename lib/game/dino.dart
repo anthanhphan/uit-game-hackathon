@@ -259,5 +259,6 @@ class Dino extends SpriteAnimationGroupComponent<DinoAnimationStates>
     isHit = false;
     speedY = 0.0;
     gameRef.playerData.currentTime = 30;
+    gameRef.playerData.bosshp = 10;
   }
 }

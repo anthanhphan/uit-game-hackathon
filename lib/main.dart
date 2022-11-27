@@ -1,3 +1,4 @@
+import 'package:dino_run/widgets/end_game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:flame/game.dart';
@@ -85,6 +86,7 @@ class DinoRunApp extends StatelessWidget {
             ShopMenu.id: (_, DinoRun gameRef) => ShopMenu(gameRef),
             Hud.id: (_, DinoRun gameRef) => Hud(gameRef),
             GameOverMenu.id: (_, DinoRun gameRef) => GameOverMenu(gameRef),
+            EndGameMenu.id: (_, DinoRun gameRef) => EndGameMenu(gameRef),
             SettingsMenu.id: (_, DinoRun gameRef) => SettingsMenu(gameRef),
           },
           // By default MainMenu overlay will be active.

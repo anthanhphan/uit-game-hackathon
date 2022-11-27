@@ -45,7 +45,7 @@ class ShopMenu extends StatelessWidget {
                         selector: (_, playerData) => playerData.currentScore,
                         builder: (_, score, __) {
                           return Text(
-                            'Shop: $score',
+                            'Score: $score',
                             style: const TextStyle(
                                 fontSize: 40, color: Colors.white),
                           );
@@ -62,32 +62,21 @@ class ShopMenu extends StatelessWidget {
                       child: const Text(
                         'Resume',
                         style: TextStyle(
-                          fontSize: 30,
+                          fontSize: 25,
                         ),
                       ),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        //add skill here
-
+                        gameRef.overlays.remove(ShopMenu.id);
+                        gameRef.overlays.add(Hud.id);
+                        gameRef.resumeEngine();
                         AudioManager.instance.resumeBgm();
                       },
                       child: const Text(
-                        'Buy skill',
+                        'Take a break!',
                         style: TextStyle(
-                          fontSize: 30,
-                        ),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        //add skill here
-                        AudioManager.instance.resumeBgm();
-                      },
-                      child: const Text(
-                        'Buy skill',
-                        style: TextStyle(
-                          fontSize: 30,
+                          fontSize: 25,
                         ),
                       ),
                     ),
