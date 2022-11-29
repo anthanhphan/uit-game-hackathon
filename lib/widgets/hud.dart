@@ -25,7 +25,6 @@ class Hud extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 10.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -92,31 +91,31 @@ class Hud extends StatelessWidget {
                       }),
                     );
                   },
-                )
+                ),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Selector<PlayerData, int>(
+                    selector: (_, playerData) => playerData.bosshp,
+                    builder: (_, bosshp, __) {
+                      return Row(
+                        children: List.generate(10, (index) {
+                          if (index < bosshp) {
+                            return const Icon(
+                              Icons.favorite,
+                              color: Color.fromARGB(255, 136, 20, 195),
+                            );
+                          } else {
+                            return const Icon(
+                              Icons.favorite_border,
+                              color: Colors.black,
+                            );
+                          }
+                        }),
+                      );
+                    },
+                  ),
+                ]),
               ],
             ),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Selector<PlayerData, int>(
-                selector: (_, playerData) => playerData.bosshp,
-                builder: (_, bosshp, __) {
-                  return Row(
-                    children: List.generate(10, (index) {
-                      if (index < bosshp) {
-                        return const Icon(
-                          Icons.favorite,
-                          color: Color.fromARGB(255, 136, 20, 195),
-                        );
-                      } else {
-                        return const Icon(
-                          Icons.favorite_border,
-                          color: Colors.black,
-                        );
-                      }
-                    }),
-                  );
-                },
-              ),
-            ]),
           ],
         ),
       ),
